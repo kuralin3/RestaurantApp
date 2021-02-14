@@ -12,9 +12,15 @@
         </div>
       </div>
       <div class="col-md-8">
-        Category
-        <a href="/management/category/create" class="btn btn-success btn-sm float-right"><i class="fa fa-plus"></i> Create Category</a>
+        Create Category
         <hr>
+        <form action="" class="get">
+          <div class="form-group">
+            <label for="categoryName">category Name</label>
+            <input type="text" name="name" class="form-control" placeholder="Category...">
+          </div>
+          <button class="btn btn-primary">save</button>
+        </form>
       </div>
     </div>
   </div>
