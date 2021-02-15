@@ -14,12 +14,25 @@
       <div class="col-md-8">
         Create Category
         <hr>
-        <form action="" class="get">
+        @if ($errors->any())
+          <div class="alert alert-danger">
+            <ul>
+              @foreach ($errors->all() as $error)
+                <li>
+                  {{$error}}
+                </li>
+              @endforeach
+            </ul>
+          </div>
+            
+        @endif
+        <form action="/management/category" method="POST">
+          @csrf
           <div class="form-group">
             <label for="categoryName">category Name</label>
             <input type="text" name="name" class="form-control" placeholder="Category...">
           </div>
-          <button class="btn btn-primary">save</button>
+          <button type="submit" class="btn btn-primary">save</button>
         </form>
       </div>
     </div>

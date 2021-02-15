@@ -15,6 +15,13 @@
         Category
         <a href="/management/category/create" class="btn btn-success btn-sm float-right"><i class="fa fa-plus"></i> Create Category</a>
         <hr>
+
+        @if (Session()->has('status'))
+          <div class="alert alert-success">
+            <button type="button" class="close" data-dismiss="alert">X</button>
+            {{Session()->get('status')}}
+          </div> 
+        @endif
       </div>
     </div>
   </div>
