@@ -24,3 +24,4 @@ Route::get('/management', function() {
 
 // controller を通すときのルーティング
 Route::resource('management/category', 'Management\CategoryController');
+Route::resource('management/menu', 'Management\MenuController');
