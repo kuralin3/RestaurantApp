@@ -22,6 +22,13 @@ Route::get('/management', function() {
     return view('management.index');
 });
 
+Route::get('/cashier', function() {
+    return view('cashier.index');
+});
+
+Route::get('/cashier/getTables', 'Cashier\CashierController@getTables');
+
 // controller を通すときのルーティング
 Route::resource('management/category', 'Management\CategoryController');
 Route::resource('management/menu', 'Management\MenuController');
+Route::resource('management/table', 'Management\TableController');
