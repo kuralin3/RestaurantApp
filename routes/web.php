@@ -22,10 +22,12 @@ Route::get('/management', function() {
     return view('management.index');
 });
 
-Route::get('/cashier', function() {
-    return view('cashier.index');
-});
+// Route::get('/cashier', function() {
+//     return view('cashier.index');
+// });
 
+Route::get('/cashier', 'Cashier\CashierController@index');
+Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierController@getMenuByCategory');
 Route::get('/cashier/getTables', 'Cashier\CashierController@getTables');
 
 // controller を通すときのルーティング
