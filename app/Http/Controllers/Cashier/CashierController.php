@@ -156,7 +156,7 @@ class CashierController extends Controller
         }   
         $html .= '</tbody></table></div>'; 
         if ($showPayment) {
-            $html .= '<br><button data-id="'.$sale_id.'" class="btn btn-success btn-block btn-confirm-order">Payment</button>'; 
+            $html .= '<br><button data-id="'.$sale_id.'" class="btn btn-success btn-block btn-payment" data-total_amount="'.$sale->total_price.'" data-toggle="modal" data-target="#exampleModal">Payment</button>'; 
         }else {
             $html .= '<br><button data-id="'.$sale_id.'" class="btn btn-warning btn-block btn-confirm-order">Confirm Order</button>'; 
         }
