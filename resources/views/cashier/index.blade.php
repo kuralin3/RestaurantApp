@@ -138,6 +138,7 @@
       })
     });
 
+    
     // payment button
     $('#order-detail').on('click','.btn-payment',function(){
       var totalAmount = $(this).attr('data-total_amount');
