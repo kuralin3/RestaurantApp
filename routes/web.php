@@ -26,6 +26,8 @@ Route::get('/management', function() {
 //     return view('cashier.index');
 // });
 
+
+// routes for cashier
 Route::get('/cashier', 'Cashier\CashierController@index');
 Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierController@getMenuByCategory');
 Route::get('/cashier/getTables', 'Cashier\CashierController@getTables');
@@ -35,10 +37,21 @@ Route::get('/cashier/getSaleDetailsByTable/{table_id}', 'Cashier\CashierControll
 Route::post('/cashier/orderFood', 'Cashier\CashierController@orderFood');
 
 Route::post('/cashier/confirmOrderStatus', 'Cashier\CashierController@confirmOrderStatus');
+Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
+Route::get('/cashier/showReceipt/{saleID}', 'Cashier\CashierController@showReceipt');
 
 Route::post('/cashier/deleteSaleDetail', 'Cashier\CashierController@deleteSaleDetail');
 
 // controller を通すときのルーティング
+
+// routes for management
 Route::resource('management/category', 'Management\CategoryController');
 Route::resource('management/menu', 'Management\MenuController');
 Route::resource('management/table', 'Management\TableController');
+
+// routes for report
+Route::get('/report', 'Report\ReportController@index');
+Route::get('/report/show', 'Report\ReportController@show');
+
+// Export 
+Route::get('/report/show/export', 'Report\ReportController@export');

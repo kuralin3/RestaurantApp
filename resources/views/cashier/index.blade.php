@@ -36,10 +36,24 @@
       </div>
       <div class="modal-body">
         <h3 class="total_amount"></h3>
+        <h3 class="changeAmount"></h3>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+            <input type="number" id="received-amount" class="form-control">
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="payment">Payment Type</label>
+          <select class="form-control" id="payment-type">
+            <option value="cash">Cash</option>
+            <option value="credit card">Credit Card</option>
+          </select>
+        </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <button type="button" class="btn btn-primary btn-save-payment" disabled>Save changes</button>
       </div>
     </div>
   </div>
@@ -72,8 +86,9 @@
     });
 
     // グローバル定数
-    SELECTED_TABLE_ID = '';
-    SELECTED_TABLE_NAME = '';
+    var SELECTED_TABLE_ID = '';
+    var SELECTED_TABLE_NAME = '';
+    var SALE_ID = '';
     // テーブルクリックでテーブル名表示
     $("#table-detail").on('click', '.btn-table', function(){
       SELECTED_TABLE_ID = $(this).data('id');
@@ -138,12 +153,50 @@
       })
     });
 
-    
+
     // payment button
     $('#order-detail').on('click','.btn-payment',function(){
       var totalAmount = $(this).attr('data-total_amount');
       $('.total_amount').html('Total Amount ' + totalAmount);
+      $('#received-amount').val('');
+      $('.changeAmount').html('');
+      SALE_ID = $(this).data('id');
     });
+
+    // calcuate
+    $('#received-amount').keyup(function(){
+      var totalAmount = $('.btn-payment').attr('data-total_amount');
+      var receivedAmount = $(this).val();
+      var changeAmount = receivedAmount - totalAmount;
+      $('.changeAmount').html("Total Change: $" + changeAmount);
+
+      // check if button
+      if (changeAmount >= 0) {
+        $('.btn-save-payment').prop('disabled', false);
+      } else {
+        $('.btn-save-payment').prop('disabled', true);
+      }
+    });
+
+    // save payment
+    $('.btn-save-payment').click(function() {
+      var receivedAmount = $('#received-amount').val();
+      var paymentType = $('#payment-type').val();
+      var saleId = SALE_ID;
+      $.ajax({
+        type: "POST",
+        data: {
+          "_token" : $('meta[name="csrf-token"]').attr('content'),
+          "saleID" : saleId,
+          "receivedAmount" : receivedAmount,
+          "paymentType" : paymentType
+        },
+        url: "/cashier/savePayment",
+        success: function(data){
+          window.location.href = data;
+        }
+      });
+    })
   });
 </script>
 
