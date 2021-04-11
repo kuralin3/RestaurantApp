@@ -11,47 +11,57 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Laravelのwelcomeページ
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
-Auth::routes();
+Route::get('/' , 'HomeController@index');
+
+// forgot とregisterを表示しない
+Auth::routes(['register' => false, 'reset' => false]);
 
 Route::get('/home', 'HomeController@index')->name('home');
-Route::get('/management', function() {
-    return view('management.index');
-});
+
 
 // Route::get('/cashier', function() {
 //     return view('cashier.index');
 // });
+Route::middleware(['auth'])->group(function(){
+    // routes for cashier
+    Route::get('/cashier', 'Cashier\CashierController@index');
+    Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierController@getMenuByCategory');
+    Route::get('/cashier/getTables', 'Cashier\CashierController@getTables');
+    Route::get('/cashier/getSaleDetailsByTable/{table_id}', 'Cashier\CashierController@getSaleDetailsByTable');
+
+    // POST
+    Route::post('/cashier/orderFood', 'Cashier\CashierController@orderFood');
+
+    Route::post('/cashier/confirmOrderStatus', 'Cashier\CashierController@confirmOrderStatus');
+    Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
+    Route::get('/cashier/showReceipt/{saleID}', 'Cashier\CashierController@showReceipt');
+
+    Route::post('/cashier/deleteSaleDetail', 'Cashier\CashierController@deleteSaleDetail');
+});
 
 
-// routes for cashier
-Route::get('/cashier', 'Cashier\CashierController@index');
-Route::get('/cashier/getMenuByCategory/{category_id}', 'Cashier\CashierController@getMenuByCategory');
-Route::get('/cashier/getTables', 'Cashier\CashierController@getTables');
-Route::get('/cashier/getSaleDetailsByTable/{table_id}', 'Cashier\CashierController@getSaleDetailsByTable');
+Route::middleware(['auth','App\Http\Middleware\VerifyAdmin'])->group(function(){
+    Route::get('/management', function() {
+        return view('management.index');
+    });
+    // controller を通すときのルーティング
 
-// POST
-Route::post('/cashier/orderFood', 'Cashier\CashierController@orderFood');
+    // routes for management
+    Route::resource('management/category', 'Management\CategoryController');
+    Route::resource('management/menu', 'Management\MenuController');
+    Route::resource('management/table', 'Management\TableController');
+    Route::resource('management/user', 'Management\UserController');
 
-Route::post('/cashier/confirmOrderStatus', 'Cashier\CashierController@confirmOrderStatus');
-Route::post('/cashier/savePayment', 'Cashier\CashierController@savePayment');
-Route::get('/cashier/showReceipt/{saleID}', 'Cashier\CashierController@showReceipt');
+    // routes for report
+    Route::get('/report', 'Report\ReportController@index');
+    Route::get('/report/show', 'Report\ReportController@show');
 
-Route::post('/cashier/deleteSaleDetail', 'Cashier\CashierController@deleteSaleDetail');
+    // Export 
+    Route::get('/report/show/export', 'Report\ReportController@export');
+});
 
-// controller を通すときのルーティング
-
-// routes for management
-Route::resource('management/category', 'Management\CategoryController');
-Route::resource('management/menu', 'Management\MenuController');
-Route::resource('management/table', 'Management\TableController');
-
-// routes for report
-Route::get('/report', 'Report\ReportController@index');
-Route::get('/report/show', 'Report\ReportController@show');
-
-// Export 
-Route::get('/report/show/export', 'Report\ReportController@export');
